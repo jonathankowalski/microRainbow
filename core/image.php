@@ -37,8 +37,12 @@ class Image {
             case 'gif':
                 return \imagecreatefromgif($this->get_path()); break;
             default :
-                throw new notSupportedTypeImage('le type '.$this->get_ext().' n\est pas géré');
+                throw new Exceptions\notSupportedTypeImage('le type '.$this->get_ext().' n\'est pas géré');
         }
+    }
+
+    public function  __destruct() {
+        \imagedestroy($this->get_identifier());
     }
 
     private function _getImageSize(){

@@ -31,7 +31,7 @@ class MicroRainbow {
         $this->set_image($image);
 
         $this->_createNewImage();
-        $this->_getAllColors();
+        //$this->_getAllColors();
         $this->_replaceColors();
     }
 
@@ -43,14 +43,13 @@ class MicroRainbow {
     }
 
     public function  __destruct() {
-        \imagedestroy($this->_newimage);
-        \imagedestroy($this->_image->get_identifier());
+        \imagedestroy($this->_newimage);        
     }
 
     private function _createNewImage(){
         //on recupere les dimensions de l'image
         $this->_newimage = \imagecreatetruecolor($this->_image->get_width(), $this->_image->get_height());
-        \imagetruecolortopalette($this->_newimage, false, 255);
+        $this->ImageTrueColorToPalette2($this->_newimage, false, 255);
         //copie de l'image
         imagecopy($this->_newimage, $this->_image->get_identifier(), 0, 0, 0, 0, $this->_image->get_width(), $this->_image->get_height());
     }
@@ -60,23 +59,29 @@ class MicroRainbow {
         $colors = array();
         for($height = 0; $height < $this->_image->get_height(); $height++){
             for($width = 0; $width < $this->_image->get_width(); $width++){
-                $colors [] = \imagecolorat($this->_newimage, $width, $height);
+                $colors [] = \imagecolorat($this->_image->get_identifier(), $width, $height);
             }
         }
         $this->_imagesColors = \array_unique($colors);
     }
 
     private function _replaceColors(){
+        $myref = array();
+        /*
         foreach($this->_imagesColors as $colorIndex){
             $reference = (\imagecolorsforindex($this->_newimage, $colorIndex));
-            foreach ($this->_Colors as $old => $new) {
-                $refOld = $this->HexToRGB($old);
-                if($refOld == $reference){
-                    $newRef = $this->HexToRGB($new);
-                    \imagecolorset($this->_newimage, $colorIndex, $newRef['red'], $newRef['green'], $newRef['blue']);
-                }
-            }
+            \imagecolorallocate($this->_newimage, $reference['red'], $reference['green'], $reference['blue']);
         }
+        */
+        imagecolormatch($this->_image->get_identifier(), $this->_newimage);
+        foreach ($this->_Colors as $old => $new) {
+            $oldRef = $this->HexToRGB($old);
+            $myref[$old] = $oldRef;
+            \imagecolorallocate($this->_newimage, $newRef['red'], $newRef['green'], $newRef['blue']);
+            $trueIndex = \imagecolorclosest($this->_newimage, $oldRef['red'], $oldRef['green'], $oldRef['blue']);
+            $newRef = $this->HexToRGB($new);
+            \imagecolorset($this->_newimage, $trueIndex, $newRef['red'], $newRef['green'], $newRef['blue']);
+        }        
     }
 
     public function HexToRGB($hex) {
@@ -98,6 +103,17 @@ class MicroRainbow {
 
         return $color;
     }
+
+    public function ImageTrueColorToPalette2( $image, $dither, $ncolors )
+{
+    $width = imagesx( $image );
+    $height = imagesy( $image );
+    $colors_handle = ImageCreateTrueColor( $width, $height );
+    ImageCopyMerge( $colors_handle, $image, 0, 0, 0, 0, $width, $height, 100 );
+    ImageTrueColorToPalette( $image, $dither, $ncolors );
+    ImageColorMatch( $colors_handle, $image );
+    ImageDestroy( $colors_handle );
+}
 
     public function get_Colors() {
         return $this->_Colors;

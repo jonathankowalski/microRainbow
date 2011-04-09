@@ -2,6 +2,12 @@
 
 Classe PHP permettant de switcher les couleurs d'une image
 
+Pour le moment on distingue 3 comportements distincts à travers les methodes suivantes :
+
+switchColors    | remplace la couleur A par la couleur B
+turnHueBy       | fait pivoter la teinte de X degrés
+switchHueColor  | remplace la teinte A par la teinte B
+
 @todo
 -Probleme sur les images complexes
 -Probleme sur les degrades

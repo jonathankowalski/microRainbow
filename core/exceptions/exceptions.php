@@ -6,4 +6,8 @@ class notSupportedTypeImage extends \Exception{
 
 }
 
+class invalidImage extends \Exception{
+    
+}
+
 ?>

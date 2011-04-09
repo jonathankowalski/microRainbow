@@ -18,6 +18,9 @@ class Image {
         $this->set_path($path);
         $this->set_ext($this->_findExt());
         $this->set_identifier($this->_createImage());
+        if(false == $this->get_identifier()){
+            throw new Exceptions\invalidImage('Impossible de creer l\'image');
+        }
         $this->_getImageSize();
     }
 

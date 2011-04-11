@@ -1,6 +1,9 @@
 µRainbow
 http://microrainbow.org
 
+Pour toutes informations:
+Jonathan Kowalski <info@jonathankowalski.fr>
+
 Classe PHP permettant de switcher les couleurs d'une image
 
 Pour le moment on distingue 3 comportements distincts à travers les methodes suivantes :

@@ -10,8 +10,7 @@ turnHueBy       | fait pivoter la teinte de X degrés
 switchHueColor  | remplace la teinte A par la teinte B
 
 @todo
--Probleme sur les images complexes
--Probleme sur les degrades
+-Probleme sur les nuances de gris
 -Le programme doit pouvoir parser un repertoire
 
 Le fichier demo transforme un carre rouge en bleu

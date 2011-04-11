@@ -1,6 +1,8 @@
 <?php
 
 namespace microRainbow;
+use microRainbow\Exceptions;
+
 
 /**
  * Description of microrainbow
@@ -51,7 +53,8 @@ class MicroRainbow {
     }
 
     public function  __destruct() {
-        \imagedestroy($this->_newimage);        
+        if($this->_newimage)
+            \imagedestroy($this->_newimage);
     }
 
     private function _createNewImage(){
@@ -118,6 +121,9 @@ class MicroRainbow {
     }
 
     public function switchHueColors($colors, $tolerance=self::TOLERANCE){
+        if(empty($colors) || !\is_array($colors)){
+            throw new Exceptions\emptyColors();
+        }
         $this->_newimage = \imagecreatetruecolor($this->_image->get_width(), $this->_image->get_height());
         imagecopy($this->_newimage, $this->_image->get_identifier(), 0, 0, 0, 0, $this->_image->get_width(), $this->_image->get_height());
         for($width = 0; $width < $this->_image->get_width(); $width++){
